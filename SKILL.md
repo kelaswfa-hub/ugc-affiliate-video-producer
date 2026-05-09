@@ -32,6 +32,8 @@ Validate minimum input
 ↓
 Analyze available assets or link info
 ↓
+If talent/influencer photo exists, convert it into a character sheet
+↓
 Collect only missing brief details
 ↓
 Lock AI video model + duration
@@ -91,6 +93,21 @@ Use only prompt-relevant visual traits:
 - framing and camera presence
 
 Avoid sensitive or speculative traits.
+
+If the user uploads a talent or influencer photo for UGC video generation, default to this prep flow before final video generation planning:
+- use the Bumi Digital skill to edit the uploaded image with **GPT Image 2**
+- create a **3-panel character sheet**
+- required panels: **full body**, **half body**, **head shot**
+- add a **black censor bar over the character's eyes**
+- treat the resulting character sheet as the preferred character reference for downstream video generation
+
+Default edit prompt for that step:
+
+```text
+buatkan character sheet dengan 3 panel: full body, half body, dan head shot. tutupi mata karakternya dengan garis hitam seperti sedang disensor matanya
+```
+
+Unless the user explicitly says otherwise, prefer the generated character sheet over the original uploaded talent photo when preparing Seedance, Veo, or Grok video prompts and payload plans.
 
 ### Product link
 
@@ -304,15 +321,33 @@ For non-Seedance models, keep using the normal shot-by-shot prompt format unless
 
 Use Bumi Digital as the generation provider when the user wants actual media generation and tool access is available.
 
+### Character-sheet prep flow for talent photos
+
+If a talent/influencer photo is provided for a UGC video workflow, insert this image-edit step before video generation:
+1. use the Bumi Digital skill image editing flow with **GPT Image 2**
+2. transform the talent photo into a **3-panel character sheet**
+3. panels must be: **full body**, **half body**, **head shot**
+4. add a **black censor bar over the eyes**
+5. use the edited character sheet as the main character reference in later video payloads
+
+Default prompt for the image edit step:
+
+```text
+buatkan character sheet dengan 3 panel: full body, half body, dan head shot. tutupi mata karakternya dengan garis hitam seperti sedang disensor matanya
+```
+
+### Video generation flow
+
 Before generating:
 1. confirm model
 2. confirm duration
 3. verify the duration is supported
-4. upload product/model references if needed
-5. prepare payload
-6. submit job
-7. poll until done
-8. return result URLs or files
+4. if talent photo exists, create character sheet first
+5. upload product references and the character sheet if needed
+6. prepare payload
+7. submit job
+8. poll until done
+9. return result URLs or files
 
 Do not hardcode exact model IDs unless confirmed from the live Bumi model list.
 Use user-facing model names in planning when the exact live model ID is not yet confirmed.

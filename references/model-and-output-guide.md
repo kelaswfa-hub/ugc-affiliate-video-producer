@@ -261,6 +261,14 @@ Do not make it look like a polished studio commercial. Avoid distorted hands, in
 
 Use user-facing names until the live Bumi model ID is confirmed.
 
+If a talent/influencer photo exists, first create a character sheet through Bumi Digital image editing with **GPT Image 2** using this default prompt:
+
+```text
+buatkan character sheet dengan 3 panel: full body, half body, dan head shot. tutupi mata karakternya dengan garis hitam seperti sedang disensor matanya
+```
+
+Then use the resulting character sheet as the preferred character reference in the video payload.
+
 ```json
 {
   "model_family": "Seedance 2.0",
@@ -272,7 +280,16 @@ Use user-facing names until the live Bumi model ID is confirmed.
   "prompt": "...",
   "audio_mode": "built-in model audio/voice",
   "separate_audio_generation": false,
-  "reference_images": []
+  "reference_images": [
+    {
+      "type": "product_reference",
+      "source": "uploaded product photo or generated URL"
+    },
+    {
+      "type": "character_sheet_reference",
+      "source": "GPT Image 2 edited character sheet URL"
+    }
+  ]
 }
 ```
 
