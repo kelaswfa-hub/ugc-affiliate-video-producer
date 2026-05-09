@@ -79,6 +79,8 @@ Use this reference when you need exact model choices, duration-aware pacing, sho
 - prompt style: explicit timing and shot purpose
 - shot range: 5s = 1–2, 10s = 3–4, 15s = 4–5
 - best for multi-shot structure
+- final prompt output rule: prefer **one combined multi-shot Seedance prompt** with explicit time markers per shot, not separate isolated shot prompts
+- include text overlays and spoken lines inline under each timed shot section
 
 ### Veo family
 - default format: 9:16
@@ -191,6 +193,8 @@ Use built-in audio/voice from the selected AI video model. Dialogue, ambience, a
 
 ## 9. AI prompt template
 
+### Default non-Seedance template
+
 ```markdown
 ### Shot X — [Scene Name]
 
@@ -210,6 +214,47 @@ Use built-in audio/voice from the selected AI video model. Dialogue, ambience, a
 
 **Negative Prompt:**
 Do not make it look like a polished studio commercial. Avoid distorted hands, inconsistent product shape, unreadable text, blurry product details, and robotic speech.
+```
+
+### Required Seedance template
+
+Use this format whenever the selected model is **Seedance 2.0** or **Seedance 2.0 Fast**.
+
+```markdown
+## Seedance Final Video Prompt
+
+**Selected Model:** Seedance 2.0 or Seedance 2.0 Fast
+**Duration:** ...
+**Aspect Ratio:** 9:16
+**Audio/Voice/SFX:** Built into generated video. No separate audio generation needed.
+
+**Prompt:**
+Create a realistic vertical 9:16 multi-shot UGC video ...
+
+Shot 1 (0–3s):
+[scene direction]
+Dialogue: "..."
+Text overlay on screen: "..."
+
+Shot 2 (3–6s):
+[scene direction]
+Dialogue: "..."
+Text overlay on screen: "..."
+
+Shot 3 (6–9s):
+[scene direction]
+Dialogue: "..."
+Text overlay on screen: "..."
+
+Shot 4 (9–10s):
+[scene direction]
+Dialogue: "..."
+Text overlay on screen: "..."
+
+Use smooth realistic motion, natural handheld framing, and detailed continuity across all shots.
+
+**Negative Prompt:**
+Do not make it look like a polished studio commercial. Avoid distorted hands, inconsistent product shape, unreadable text overlays, blurry product details, and robotic speech.
 ```
 
 ## 10. Payload planning template

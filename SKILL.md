@@ -285,6 +285,21 @@ Include:
 - text overlay
 - negative prompt if useful
 
+### Seedance-specific output rule
+
+If the selected model is **Seedance 2.0** or **Seedance 2.0 Fast**, always write the final video prompt in a **single multi-shot prompt block** with explicit time markers.
+
+Required format style:
+- one combined prompt for the whole video
+- use shot timing labels such as `Shot 1 (0–3s)`, `Shot 2 (3–6s)`, `Shot 3 (6–9s)`
+- describe each shot in sequence inside the same prompt
+- include spoken dialogue and text overlay for each shot inside that combined prompt
+- keep it detailed, production-oriented, and easy to paste directly into Seedance
+
+For Seedance outputs, prefer this combined multi-shot format over isolated per-shot prompt blocks.
+
+For non-Seedance models, keep using the normal shot-by-shot prompt format unless the user asks otherwise.
+
 ## 8. Bumi Digital integration
 
 Use Bumi Digital as the generation provider when the user wants actual media generation and tool access is available.
