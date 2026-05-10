@@ -348,8 +348,17 @@ If a talent/influencer photo is provided for a UGC video workflow, insert this i
 Default prompt for the image edit step:
 
 ```text
-buatkan character sheet dengan 3 panel: full body, half body, dan head shot. tutupi mata karakternya dengan garis hitam seperti sedang disensor matanya
+buatkan character sheet dengan 3 panel: full body, half body, dan head shot. tutupi mata karakternya dengan garis hitam seperti sedang disensor matanya. Jangan merubah outfit nya
 ```
+
+Strict prompt rule for this step:
+- always use the exact default prompt above as the base prompt
+- do not rewrite, paraphrase, shorten, expand, translate, or stylize the default prompt
+- do not remove the instruction about the black censor bar
+- do not remove the instruction `Jangan merubah outfit nya`
+- do not inject extra wardrobe, styling, outfit, or fashion changes into the prompt
+- only add clearly separate technical parameters outside the prompt text when needed, such as model selection or aspect ratio
+- unless the user explicitly asks to change the character-sheet prompt, keep the prompt text exactly unchanged
 
 Aspect ratio rule for this step:
 - **GPT Image 2**: always **3:2**
