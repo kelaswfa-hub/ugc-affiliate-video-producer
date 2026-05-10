@@ -261,10 +261,57 @@ Do not make it look like a polished studio commercial. Avoid distorted hands, in
 
 Use user-facing names until the live Bumi model ID is confirmed.
 
-If a talent/influencer photo exists, first create a character sheet through Bumi Digital image editing with **GPT Image 2** using this default prompt:
+If a talent/influencer photo exists, first create a character sheet through Bumi Digital image editing.
+
+Use this exact default prompt:
 
 ```text
-buatkan character sheet dengan 3 panel: full body, half body, dan head shot. tutupi mata karakternya dengan garis hitam seperti sedang disensor matanya
+buatkan character sheet dengan 3 panel: full body, half body, dan head shot. tutupi mata karakternya dengan garis hitam seperti sedang disensor matanya. Jangan merubah outfit nya
+```
+
+Keep that prompt text unchanged unless the user explicitly asks to modify it.
+
+Character-sheet model rules:
+- primary model: **OpenAI GPT Image 2**
+- GPT Image 2 input image field: **`input_images`**
+- GPT Image 2 aspect ratio: **`3:2`**
+- fallback model: **Google Nano Banana 2**
+- Nano Banana 2 input image field: **`image_input`**
+- Nano Banana 2 aspect ratio: **`16:9`**
+- upload the source talent/influencer photo first and pass the hosted Bumi file URL into the model-specific image input field
+
+Example payload — GPT Image 2 character sheet:
+
+```json
+{
+  "model_id": "openai/gpt-image-2",
+  "parameters": {
+    "prompt": "buatkan character sheet dengan 3 panel: full body, half body, dan head shot. tutupi mata karakternya dengan garis hitam seperti sedang disensor matanya. Jangan merubah outfit nya",
+    "input_images": [
+      "https://storage.bumi.digital/uploads/source-talent-photo.jpg"
+    ],
+    "aspect_ratio": "3:2",
+    "quality": "high",
+    "output_format": "png"
+  }
+}
+```
+
+Example payload — Nano Banana 2 fallback character sheet:
+
+```json
+{
+  "model_id": "google/nano-banana-2",
+  "parameters": {
+    "prompt": "buatkan character sheet dengan 3 panel: full body, half body, dan head shot. tutupi mata karakternya dengan garis hitam seperti sedang disensor matanya. Jangan merubah outfit nya",
+    "image_input": [
+      "https://storage.bumi.digital/uploads/source-talent-photo.jpg"
+    ],
+    "aspect_ratio": "16:9",
+    "resolution": "2K",
+    "output_format": "png"
+  }
+}
 ```
 
 Then use the resulting character sheet as the preferred character reference in the video payload.
