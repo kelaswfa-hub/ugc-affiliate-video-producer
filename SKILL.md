@@ -100,11 +100,13 @@ Avoid sensitive or speculative traits.
 
 If the user uploads a talent or influencer photo for UGC video generation, default to this prep flow before final video generation planning:
 - use the Bumi Digital skill to edit the uploaded image with **GPT Image 2**
+- for **GPT Image 2**, always use **3:2** aspect ratio
 - create a **3-panel character sheet**
 - required panels: **full body**, **half body**, **head shot**
 - add a **black censor bar over the character's eyes**
 - treat the resulting character sheet as the preferred character reference for downstream video generation
 - if **GPT Image 2** fails, retry the same character-sheet step once with **Nano Banana 2**
+- for **Nano Banana 2**, always use **16:9** aspect ratio
 - if **Nano Banana 2** also fails, stop the character-sheet flow and clearly report the failure to the user
 - do not continue retry loops beyond that single fallback attempt
 
@@ -334,18 +336,24 @@ For video generation, use a strict single-attempt policy: if one generation atte
 
 If a talent/influencer photo is provided for a UGC video workflow, insert this image-edit step before video generation:
 1. use the Bumi Digital skill image editing flow with **GPT Image 2**
-2. transform the talent photo into a **3-panel character sheet**
-3. panels must be: **full body**, **half body**, **head shot**
-4. add a **black censor bar over the eyes**
-5. if **GPT Image 2** fails, retry the same step once with **Nano Banana 2**
-6. if **Nano Banana 2** also fails, stop and report the failure to the user without additional retries
-7. use the edited character sheet as the main character reference in later video payloads
+2. for **GPT Image 2**, always use **3:2** aspect ratio
+3. transform the talent photo into a **3-panel character sheet**
+4. panels must be: **full body**, **half body**, **head shot**
+5. add a **black censor bar over the eyes**
+6. if **GPT Image 2** fails, retry the same step once with **Nano Banana 2**
+7. for **Nano Banana 2**, always use **16:9** aspect ratio
+8. if **Nano Banana 2** also fails, stop and report the failure to the user without additional retries
+9. use the edited character sheet as the main character reference in later video payloads
 
 Default prompt for the image edit step:
 
 ```text
 buatkan character sheet dengan 3 panel: full body, half body, dan head shot. tutupi mata karakternya dengan garis hitam seperti sedang disensor matanya
 ```
+
+Aspect ratio rule for this step:
+- **GPT Image 2**: always **3:2**
+- **Nano Banana 2**: always **16:9**
 
 ### Video generation flow
 
