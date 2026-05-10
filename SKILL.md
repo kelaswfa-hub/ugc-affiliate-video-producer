@@ -32,7 +32,11 @@ Validate minimum input
 ↓
 Analyze available assets or link info
 ↓
-If talent/influencer photo exists, convert it into a character sheet
+If talent/influencer photo exists, convert it into a character sheet with GPT Image 2
+↓
+If GPT Image 2 fails, retry once with Nano Banana 2
+↓
+If Nano Banana 2 also fails, stop and report the failure
 ↓
 Collect only missing brief details
 ↓
@@ -100,6 +104,9 @@ If the user uploads a talent or influencer photo for UGC video generation, defau
 - required panels: **full body**, **half body**, **head shot**
 - add a **black censor bar over the character's eyes**
 - treat the resulting character sheet as the preferred character reference for downstream video generation
+- if **GPT Image 2** fails, retry the same character-sheet step once with **Nano Banana 2**
+- if **Nano Banana 2** also fails, stop the character-sheet flow and clearly report the failure to the user
+- do not continue retry loops beyond that single fallback attempt
 
 Default edit prompt for that step:
 
@@ -321,6 +328,8 @@ For non-Seedance models, keep using the normal shot-by-shot prompt format unless
 
 Use Bumi Digital as the generation provider when the user wants actual media generation and tool access is available.
 
+For video generation, use a strict single-attempt policy: if one generation attempt fails, stop and report the failure without automatic retry.
+
 ### Character-sheet prep flow for talent photos
 
 If a talent/influencer photo is provided for a UGC video workflow, insert this image-edit step before video generation:
@@ -328,7 +337,9 @@ If a talent/influencer photo is provided for a UGC video workflow, insert this i
 2. transform the talent photo into a **3-panel character sheet**
 3. panels must be: **full body**, **half body**, **head shot**
 4. add a **black censor bar over the eyes**
-5. use the edited character sheet as the main character reference in later video payloads
+5. if **GPT Image 2** fails, retry the same step once with **Nano Banana 2**
+6. if **Nano Banana 2** also fails, stop and report the failure to the user without additional retries
+7. use the edited character sheet as the main character reference in later video payloads
 
 Default prompt for the image edit step:
 
@@ -345,9 +356,10 @@ Before generating:
 4. if talent photo exists, create character sheet first
 5. upload product references and the character sheet if needed
 6. prepare payload
-7. submit job
-8. poll until done
-9. return result URLs or files
+7. submit job once only
+8. if the generation attempt fails, stop and clearly report the failure to the user
+9. do not retry the same video generation request automatically
+10. if the job succeeds, return result URLs or files
 
 Do not hardcode exact model IDs unless confirmed from the live Bumi model list.
 Use user-facing model names in planning when the exact live model ID is not yet confirmed.
@@ -386,7 +398,76 @@ If the user leaves details open, default to:
 - style: problem-solution + honest review
 - CTA: cek link di bio / klik keranjang
 
-## 11. End with a concrete next step
+## 11. User-facing failure message templates
+
+Use consistent, plain, user-facing error messages when media generation fails.
+
+### A. Character sheet generation failed after fallback
+
+Use when **GPT Image 2** failed and the single fallback attempt with **Nano Banana 2** also failed.
+
+Template:
+
+```text
+Character sheet influencer belum berhasil dibuat.
+
+Saya sudah mencoba:
+1. GPT Image 2
+2. Nano Banana 2
+
+Keduanya gagal pada percobaan ini, jadi proses saya hentikan dulu tanpa retry tambahan.
+
+Kalau mau, saya bisa lanjut bantu dengan salah satu opsi berikut:
+- rapikan prompt character sheet-nya dulu
+- pakai foto influencer lain
+- lanjut bikin production pack tanpa character sheet
+```
+
+### B. Video generation failed
+
+Use when the video generation job fails on its first and only attempt.
+
+Template:
+
+```text
+Video belum berhasil digenerate.
+
+Percobaan generate video gagal, dan sesuai flow saat ini proses saya hentikan dulu tanpa retry otomatis.
+
+Kalau mau, saya bisa bantu lanjut dengan salah satu opsi berikut:
+- review prompt videonya dulu
+- sederhanakan adegan atau gerakan
+- ganti model atau durasi video
+- siapkan ulang payload generation yang lebih aman
+```
+
+### C. Short failure version
+
+Use this shorter version when the chat context needs a compact update.
+
+Character sheet short version:
+
+```text
+Character sheet belum berhasil dibuat. Saya sudah coba GPT Image 2 lalu fallback ke Nano Banana 2, tapi keduanya gagal. Proses saya stop dulu tanpa retry tambahan.
+```
+
+Video short version:
+
+```text
+Video belum berhasil digenerate. Percobaan pertama gagal, jadi proses saya stop dulu tanpa retry otomatis.
+```
+
+### D. Reporting rule
+
+When reporting failures:
+- say clearly what failed
+- mention which model or step was attempted
+- mention whether a fallback was attempted
+- state that the process was stopped
+- do not promise hidden retries
+- offer 2 to 4 concrete next-step options
+
+## 12. End with a concrete next step
 
 Always end with a direct next step, for example:
 - ask the user to choose an angle
