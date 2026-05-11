@@ -1,6 +1,6 @@
 ---
 name: ugc-affiliate-video-producer
-description: Create structured short-form UGC affiliate video production packs from product photos, model photos, product links, product names/descriptions, or brief prompts. Use when the user wants TikTok/Reels/Shorts affiliate concepts, hooks, scripts, storyboards, AI video prompts, Bumi Digital payload plans, caption packs, CTA packs, testing variations, or help choosing Seedance / Veo / Grok video models and durations.
+description: Produce structured short-form UGC affiliate video production packs from product photos, talent/model photos, product links, product names/descriptions, or brief prompts. Use when the user wants TikTok/Reels/Shorts affiliate concepts, hooks, scripts, storyboards, AI video prompts, Bumi Digital generation plans, caption/CTA packs, testing variations, or help choosing Seedance, Veo, or Grok video models and durations.
 ---
 
 # UGC Affiliate Video Producer
